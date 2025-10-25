@@ -12023,7 +12023,7 @@ parser_lex(pm_parser_t *parser) {
 
             // If we haven't found an escape yet, then this buffer will be
             // unallocated since we can refer directly to the source string.
-            pm_token_buffer_t token_buffer = { 0 };
+            pm_token_buffer_t token_buffer = { { { 0 } } };
 
             while (breakpoint != NULL) {
                 // If we hit whitespace, then we must have received content by
@@ -12200,7 +12200,7 @@ parser_lex(pm_parser_t *parser) {
             // characters.
             const uint8_t *breakpoints = lex_mode->as.regexp.breakpoints;
             const uint8_t *breakpoint = pm_strpbrk(parser, parser->current.end, breakpoints, parser->end - parser->current.end, false);
-            pm_regexp_token_buffer_t token_buffer = { 0 };
+            pm_regexp_token_buffer_t token_buffer = { { 0 } };
 
             while (breakpoint != NULL) {
                 uint8_t term = lex_mode->as.regexp.terminator;
@@ -12442,7 +12442,7 @@ parser_lex(pm_parser_t *parser) {
 
             // If we haven't found an escape yet, then this buffer will be
             // unallocated since we can refer directly to the source string.
-            pm_token_buffer_t token_buffer = { 0 };
+            pm_token_buffer_t token_buffer = { { 0 } };
 
             while (breakpoint != NULL) {
                 // If we hit the incrementor, then we'll increment then nesting and
@@ -12765,7 +12765,7 @@ parser_lex(pm_parser_t *parser) {
             }
 
             const uint8_t *breakpoint = pm_strpbrk(parser, parser->current.end, breakpoints, parser->end - parser->current.end, true);
-            pm_token_buffer_t token_buffer = { 0 };
+            pm_token_buffer_t token_buffer = { { 0 } };
             bool was_line_continuation = false;
 
             while (breakpoint != NULL) {
@@ -14070,7 +14070,7 @@ pm_hash_key_static_literals_add(pm_parser_t *parser, pm_static_literals_t *liter
     const pm_node_t *duplicated = pm_static_literals_add(&parser->newline_list, parser->start_line, literals, node, true);
 
     if (duplicated != NULL) {
-        pm_buffer_t buffer = { 0 };
+        pm_buffer_t buffer = { { 0 } };
         pm_static_literal_inspect(&buffer, &parser->newline_list, parser->start_line, parser->encoding->name, duplicated);
 
         pm_diagnostic_list_append_format(
@@ -14281,7 +14281,7 @@ parse_arguments(pm_parser_t *parser, pm_arguments_t *arguments, bool accepts_for
                 pm_keyword_hash_node_t *hash = pm_keyword_hash_node_create(parser);
                 argument = (pm_node_t *) hash;
 
-                pm_static_literals_t hash_keys = { 0 };
+                pm_static_literals_t hash_keys = { { 0 } };
                 bool contains_keyword_splat = parse_assocs(parser, &hash_keys, (pm_node_t *) hash, (uint16_t) (depth + 1));
 
                 parse_arguments_append(parser, arguments, argument);
@@ -14403,7 +14403,7 @@ parse_arguments(pm_parser_t *parser, pm_arguments_t *arguments, bool accepts_for
                     contains_keywords = true;
 
                     // Create the set of static literals for this hash.
-                    pm_static_literals_t hash_keys = { 0 };
+                    pm_static_literals_t hash_keys = { { 0 } };
                     pm_hash_key_static_literals_add(parser, &hash_keys, argument);
 
                     // Finish parsing the one we are part way through.
@@ -15951,7 +15951,7 @@ parse_predicate(pm_parser_t *parser, pm_binding_power_t binding_power, pm_contex
 
 static inline pm_node_t *
 parse_conditional(pm_parser_t *parser, pm_context_t context, size_t opening_newline_index, bool if_after_else, uint16_t depth) {
-    pm_node_list_t current_block_exits = { 0 };
+    pm_node_list_t current_block_exits = { { 0 } };
     pm_node_list_t *previous_block_exits = push_block_exits(parser, &current_block_exits);
 
     pm_token_t keyword = parser->previous;
